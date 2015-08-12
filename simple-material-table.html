@@ -22,7 +22,7 @@ icons.
 
 Example:
 
-    <material-table
+    <simple-material-table
       title="Test Table"
       columns="[[columns]]"
       table-data="[[tableData]]" >
@@ -31,10 +31,10 @@ Example:
 @demo
 -->
 
-<dom-module id="material-table">
+<dom-module id="simple-material-table">
 
   <style>
-    mat-paper.material-table{
+    mat-paper.simple-material-table{
       background-color: rgb(255, 255, 255);
       padding: 0px;
     }
@@ -248,7 +248,7 @@ Example:
 <script>
   Polymer({
 
-    is: 'material-table',
+    is: 'simple-material-table',
 
     /**
      * The `row-selected` event is fired when a row is selected

@@ -1,5 +1,5 @@
 <link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../material-table.html">
+<link rel="import" href="../simple-material-table.html">
 
 <dom-module id="demo-simple">
   <style>
@@ -8,12 +8,12 @@
     }
   </style>
   <template>
-    <material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[tableData]]"
+    <simple-material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[tableData]]"
       on-row-selected="_onRowSelected"
       on-action-add="_onActionAdd"
       on-action-edit="_onActionEdit"
       on-action-delete="_onActionDelete">
-    </material-table>
+    </simple-material-table>
   </template>
   <script>
     Polymer({
