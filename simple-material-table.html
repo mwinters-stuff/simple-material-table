@@ -193,9 +193,9 @@ Example:
         <div class="title">{{title}}</div>
         <div class="spacer"></div>
         <div class="actions">
-          <mat-icon-button class="title" id="actionAdd" icon="table:add" on-tap="_tapActionAdd"></mat-icon-button>
-          <mat-icon-button class="title"  id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]"></mat-icon-button>
-          <mat-icon-button class="title"  id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]"></mat-icon-button>
+          <mat-icon-button class="title" id="actionAdd" icon="table:add" on-tap="_tapActionAdd" hidden$="[[!showActionAdd]]"></mat-icon-button>
+          <mat-icon-button class="title"  id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionEdit]]"></mat-icon-button>
+          <mat-icon-button class="title"  id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionDelete]]"></mat-icon-button>
 
           <mat-icon-button class="title"
               id="columnSelectorButton"
@@ -308,10 +308,37 @@ Example:
         type: String
       },
 
+      /**
+       * Array of objects to display
+       */
       tableData: {
         type: Array,
         notify: true,
         value: []
+      },
+
+      /**
+       * Show add action
+       */
+      showActionAdd: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Show edit action
+       */
+      showActionEdit: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Show delete action.
+       */
+      showActionDelete: {
+        type: Boolean,
+        value: false
       },
 
       /**
@@ -470,7 +497,7 @@ Example:
     },
 
     _tapActionEdit:function(){
-      this.fire('action-delete', this.selectedTableRow.row);
+      this.fire('action-edit', this.selectedTableRow.row);
     },
 
     _tapActionDelete:function(){
