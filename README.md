@@ -1,6 +1,6 @@
 # simple-material-table
 
-An that provides a material design table.
+A web component that provides a material design table.
 
 
 ## Install
