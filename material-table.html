@@ -1,0 +1,503 @@
+<!--
+@license
+Copyright (c) 2015 Mathew Winters. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../mat-paper/mat-paper.html">
+<link rel="import" href="../mat-icon-button/mat-icon-button.html">
+<link rel="import" href="../mat-icon/mat-icon.html">
+<link rel="import" href="../mat-menu/mat-menu.html">
+<link rel="import" href="../mat-option/mat-option.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="table-icons.html">
+
+<!--
+An element providing a simple material design table with column
+hiding and sorting. Custom formatting of data is supported.
+This table is single select only, there is also add/edit/delete
+icons.
+
+Example:
+
+    <material-table
+      title="Test Table"
+      columns="[[columns]]"
+      table-data="[[tableData]]" >
+    </material-table>
+
+@demo
+-->
+
+<dom-module id="material-table">
+
+  <style>
+    mat-paper.material-table{
+      background-color: rgb(255, 255, 255);
+      padding: 0px;
+    }
+
+    .mdl-data-table {
+      width: 100%;
+      /*position: relative;*/
+      /*border: 1px solid rgba(0, 0, 0, 0.12);*/
+      border-collapse: collapse;
+      white-space: nowrap;
+      font-size: 13px;
+      background-color: rgb(255, 255, 255);
+    }
+
+    .mdl-data-table thead {
+      padding-bottom: 3px;
+    }
+
+    .mdl-data-table thead .mdl-data-table__select {
+      margin-top: 0;
+    }
+
+    .mdl-data-table tbody tr {
+      position: relative;
+      height: 48px;
+      -webkit-transition-duration: 0.28s;
+      transition-duration: 0.28s;
+      -webkit-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-transition-property: background-color;
+      transition-property: background-color;
+    }
+
+    .mdl-data-table tbody tr.is-selected {
+      background-color: #e0e0e0;
+    }
+
+    .mdl-data-table tbody tr:hover {
+      background-color: #eeeeee;
+    }
+
+    .mdl-data-table td,
+    .mdl-data-table th {
+      padding: 0 18px 0 18px;
+      text-align: right;
+    }
+
+    .mdl-data-table td:first-of-type,
+    .mdl-data-table th:first-of-type {
+      padding-left: 24px;
+    }
+
+    .mdl-data-table td:last-of-type,
+    .mdl-data-table th:last-of-type {
+      padding-right: 24px;
+    }
+
+    .mdl-data-table td {
+      position: relative;
+      vertical-align: top;
+      height: 48px;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      padding-top: 12px;
+      box-sizing: border-box;
+    }
+
+    .mdl-data-table td .mdl-data-table__select {
+      vertical-align: top;
+      position: absolute;
+      left: 24px;
+    }
+
+    .mdl-data-table th.mdl-data-table__sort{
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+
+    .mdl-data-table th {
+      position: relative;
+      vertical-align: bottom;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 24px;
+      letter-spacing: 0;
+      color: rgba(0, 0, 0, 0.54);
+      height: 48px;
+      font-size: 12px;
+      padding-bottom: 8px;
+      box-sizing: border-box;
+    }
+
+
+    .mdl-data-table th .mdl-data-table__select {
+      position: relative;
+    }
+
+    .mdl-data-table__select {
+      width: 16px;
+    }
+
+    .mdl-data-table td.mdl-data-table__cell--non-numeric {
+      text-align: left;
+    }
+    .mdl-data-table th.mdl-data-table__cell--non-numeric {
+      text-align: left;
+    }
+
+    mat-paper {
+      padding: 16px;
+      cursor: pointer;
+      /*margin: 24px;*/
+    }
+
+    div.header{
+      @apply(--layout-horizontal);
+    }
+    div.spacer{
+      @apply(--layout-flex);
+    }
+
+    mat-icon.small{
+      height: 16px;
+      width: 16px;
+      color: rgba(0,0,0,.87);
+    }
+
+    .title{
+      text-overflow: ellipsis;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 0;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .header{
+      height: 24px;
+      margin-bottom: 8px;
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-top: 16px;
+    }
+
+    mat-icon-button.title{
+      height: 24px;
+      width: 24px;
+      color: rgba(0,0,0,.54);
+    }
+
+  </style>
+
+  <template>
+    <mat-paper z="1">
+      <div class="header">
+        <div class="title">{{title}}</div>
+        <div class="spacer"></div>
+        <div class="actions">
+          <mat-icon-button class="title" id="actionAdd" icon="table:add" on-tap="_tapActionAdd"></mat-icon-button>
+          <mat-icon-button class="title"  id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]"></mat-icon-button>
+          <mat-icon-button class="title"  id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]"></mat-icon-button>
+
+          <mat-icon-button class="title"
+              id="columnSelectorButton"
+              hidden$="[[!showColumnSelector]]"
+              icon="table:filter"
+              on-tap="_toggleColumnMenu">
+            </mat-icon-button>
+          <mat-menu id="columnSelectorMenu">
+            <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index">
+
+              <mat-option toggleable active$="{{!column.hidden}}"
+                              column="[[column]]"
+                              label="[[column.title]]"
+                              on-tap="_selectColumn"
+                              column-index="[[column_index]]">
+              </mat-option>
+
+            </template>
+          </mat-menu>
+        </div>
+      </div>
+
+      <table  id="theTable" class="mdl-data-table mdl-js-data-table">
+        <thead>
+          <tr>
+            <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+              <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]" >
+                <mat-icon class="small" hidden name="[[sortColumnIcon]]"></mat-icon>
+                <span>{{column.title}}</span>
+              </th>
+            </template>
+          </tr>
+        </thead>
+
+        <tbody>
+          <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable">
+            <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
+              <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+                <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]" >{{_cellData(itemrow, column)}}</td>
+              </template>
+            </tr>
+          </template>
+        </tbody>
+        </table>
+    </mat-paper>
+  </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'material-table',
+
+    /**
+     * The `row-selected` event is fired when a row is selected
+     *
+     * @event row-selected
+     * @detail {{row: Object}}
+     */
+     /**
+      * The `row-unselected` event is fired when a row is unselected
+      *
+      * @event row-unselected
+      * @detail {{row: Object}}
+      */
+
+
+     /**
+      * The `action-delete` event is fired when the delete icon is clicked
+      *
+      * @event action-delete
+      * @detail {{row: Object}}
+      */
+
+    /**
+     * The `action-delete` event is fired when the delete icon is clicked
+     *
+     * @event action-delete
+     * @detail {{row: Object}}
+     */
+
+     /**
+      * The `action-edit` event is fired when the edit icon is clicked
+      *
+      * @event action-edit
+      * @detail {{row: Object}}
+      */
+
+      /**
+       * The `action-add` event is fired when the add icon is clicked
+       *
+       * @event action-add
+       *
+       */
+
+       /**
+        * The `action-delete` event is fired when the delete icon is clicked
+        *
+        * @event action-delete
+        * @detail {{row: Object}}
+        */
+
+
+    properties: {
+      /**
+       * Title for display at the top of the card.
+       */
+      title:{
+        type: String
+      },
+
+      tableData: {
+        type: Array,
+        notify: true,
+        value: []
+      },
+
+      /**
+       * Column definitions, array of objects
+       * ### Each column is defined as
+       *  Attribute | Type        | Description
+       * -----------|-------------|------------------
+       *    title| String| column title
+       *   number| Boolean|  true of column is a number
+       *   column| String| field name of column in data object
+       *   hidden| Boolean| default to hidden (true) or not (false)
+       *  formatter| function | if set, is a function taking value returning formatted value.
+       *
+       */
+      columns: {
+        type: Array,
+        notify: true,
+        value: function() {
+          return [];
+        }
+      },
+
+      /**
+       * Sort column index within `columns`.
+       */
+      sortColumnIndex:{
+        type: Number,
+        notify: true,
+        value: 0
+      },
+
+      /**
+       * Sort is ascending (true) or descending (false).
+       */
+      sortColumnAsc:{
+        type: Boolean,
+        notify: true,
+        value: false,
+        observe: '_sortColumnAscChanged'
+      },
+
+    },
+
+    observers: [
+      '_sortColumnAscChanged(sortColumnAsc)',
+    ],
+
+    _cellData: function(itemrow, column){
+      return column.formatter ? column.formatter(itemrow[column.column]) : itemrow[column.column];
+    },
+
+    _columnClass: function(index) {
+      if (this.columns && index < this.columns.length) {
+        return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric';
+      }
+      return 'mdl-data-table__cell--non-numeric';
+    },
+
+    _columnHeaderClass: function(index) {
+      if (this.columns && index < this.columns.length) {
+        return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric ';
+      }
+      return 'mdl-data-table__cell--non-numeric';
+    },
+
+    _rowTap: function(e) {
+      console.log('_rowTap', e);
+      var toSelect = e.model.row_index;
+      var lastSelected = this.selectedTableRow;
+      var element = null;
+
+      for (var i = 0; i < e.path.length; i++) {
+        if (e.path[i].tagName === "TR") {
+          element = e.path[i];
+          break;
+        }
+      }
+      if(element){
+        if(lastSelected > -1){
+          if(this.lastSelectedElement){
+            this.lastSelectedElement.classList.remove('is-selected');
+          }
+          this.selectedTableRow = -1;
+          this.lastSelectedElement = null;
+        }
+
+        if(toSelect !== lastSelected){
+          this.selectedTableRow = toSelect;
+          element.classList.add('is-selected');
+
+          if(lastSelected){
+            this.fire('row-unselected',lastSelected);
+          }
+
+          this.fire('row-selected',e.model.itemrow);
+          this.lastSelectedElement = element;
+        }
+      }
+
+    },
+
+    _onTapHeader: function(e){
+      console.log('_onTapHeader',e);
+
+      var element = null;
+      for (var i = 0; i < e.path.length; i++) {
+        if (e.path[i].tagName === "TH") {
+          element = e.path[i];
+          break;
+        }
+      }
+
+      if(this.currentSortHeaderElement){
+        this.currentSortHeaderElement.classList.remove('mdl-data-table__sort');
+        this.currentSortHeaderElement.children[0].hidden = true;
+      }
+
+      if(this.sortColumnIndex === e.model.column_index){
+        this.sortColumnAsc = !this.sortColumnAsc;
+      }
+      this.sortColumnIndex = e.model.column_index;
+
+      this.currentSortHeaderElement = element;
+      this.currentSortHeaderElement.classList.add('mdl-data-table__sort');
+      var iconElement = element.children[0];
+      iconElement.hidden = false;
+
+      //this.$.headerTemplate.render();
+      this.$.dataTemplate.render();
+    },
+
+    _sortTable: function(a,b){
+      var r = 0;
+      var column = this.columns[this.sortColumnIndex].column;
+
+      var av = this.columns[this.sortColumnIndex].number ? parseFloat(a[column]) : a[column];
+      var bv = this.columns[this.sortColumnIndex].number ? parseFloat(b[column]) : b[column];
+
+      if(av < bv)
+      {
+        r = -1;
+      }
+      if(av > bv)
+      {
+        r = 1;
+      }
+      return this.sortColumnAsc ? -r : r;
+    },
+
+    _sortIconHidden: function(column_index){
+      return column_index === this.sortColumnIndex;
+    },
+
+    _tapActionAdd:function(){
+      this.fire('action-add');
+    },
+
+    _tapActionEdit:function(){
+      this.fire('action-delete', this.selectedTableRow.row);
+    },
+
+    _tapActionDelete:function(){
+      this.fire('action-delete', this.selectedTableRow.row);
+    },
+
+    // Element Lifecycle
+    _sortColumnAscChanged: function(value){
+      this.sortColumnIcon = value ? 'table:arrow-up' : 'table:arrow-down';
+    },
+
+    _toggleColumnMenu: function(){
+      this.$.columnSelectorMenu.toggle(this.$.columnSelectorButton);
+    },
+
+    _selectColumn: function(e){
+      // console.log('_selectColumn',e.model.column_index);
+      this.set('columns.' + e.model.column_index + '.hidden',!this.columns[e.model.column_index].hidden);
+    },
+
+    ready: function() {
+      this.selectedTableRow = -1;
+      this.lastSelectedElement = null;
+      this.currentSortHeaderElement = null;
+
+    },
+
+
+  });
+</script>
