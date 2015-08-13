@@ -15,7 +15,7 @@
   ],
   "main": "material-table.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/wintersandroid/material-table/",
+  "homepage": "https://github.com/wintersandroid/simple-material-table/",
   "ignore": [
     "/.*",
     "/test/",
