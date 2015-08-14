@@ -25,9 +25,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- You can use the document as a place to set up your fixtures. -->
   <simple-material-table title="Test Table Title"
-    show-action-add
+      show-action-add
       show-action-delete
-     
+
     ></simple-material-table>
 
   <script>
@@ -35,14 +35,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       suite('<simple-material-table>', function() {
         setup( function(){
-          console.log('before test');  
+          console.log('before test');
           myEl.columns = [
               {
                 title: "Sensor",
                 number: false,
                 column: 'sensor',
                 hidden: false
-      
+
               }, {
                 title: "Value",
                 number: true,
@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   return parseFloat(value).toFixed(2);
                 },
                 hidden: false
-      
+
               }, {
                 title: "Raw Value",
                 number: true,
@@ -62,7 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 hidden: true
               },
           ];
-          
+
           myEl.tableData =
           [
             {
@@ -82,39 +82,175 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             {
                 "sensor": "B",
-                "value": 1020.26,
+                "value": 1020.2677,
                 "rawValue": "102026"
             },
           ];
-          
+
           Polymer.dom.flush();
-          
+
         });
-        
-        test('Checks Columns and Data', function() {
-          assert.equal(myEl.columns.length, 3);
-          assert.equal(myEl.tableData.length, 4);
-          assert.equal(myEl.title,'Test Table Title');
-          
+
+        test('Checks Column Header', function() {
+          expect(myEl).to.be.ok;
+          expect(myEl).to.have.property('columns').with.length(3);
+          expect(myEl).to.have.property('tableData').with.length(4);
+          expect(myEl).to.have.property('title').that.equals('Test Table Title');
+
+          var title = myEl.querySelector('div.title');
+          expect(title).to.be.ok;
+          expect(title).to.have.property('innerText').that.equals('Test Table Title');
+
           var thEle = myEl.getElementsByTagName('th');
-          assert.equal(thEle.length,3);
-          
+          expect(thEle).to.be.ok;
+          expect(thEle).to.have.length(3);
+
+          // first and second visible, third hidden.
+          expect(thEle[0]).to.have.property('hidden').that.is.false;
+          expect(thEle[1]).to.have.property('hidden').that.is.false;
+          expect(thEle[2]).to.have.property('hidden').that.is.true;
+
+          expect(thEle[0]).to.have.property('innerText').that.has.string('Sensor');
+          expect(thEle[1]).to.have.property('innerText').that.has.string('Value');
+          expect(thEle[2]).to.have.property('innerText').that.has.string('Raw Value');
+
+          // check alignment
+          expect(thEle[0].classList.contains('mdl-data-table__cell--non-numeric')).to.be.true;
+          expect(thEle[1].classList.contains('mdl-data-table__cell--non-numeric')).to.be.false;
+          expect(thEle[2].classList.contains('mdl-data-table__cell--non-numeric')).to.be.false;
+
         });
 
-        // test('says hello', function() {
-        //   assert.equal(myEl.sayHello(), 'material-table says, Hello World!');
+        test('Checks Table Rows', function() {
+          expect(myEl).to.be.ok;
+          var theRows = myEl.querySelectorAll('tbody tr');
+          expect(theRows).to.be.ok;
+          expect(theRows).to.have.length(4);
 
-        //   var greetings = myEl.sayHello('greetings Earthlings');
-        //   assert.equal(greetings, 'material-table says, greetings Earthlings');
-        // });
+          var row1 = theRows[0];
+          expect(row1).to.be.ok;
+          var theCells = row1.getElementsByTagName('td');
+          expect(theCells).to.be.ok;
+          expect(theCells).to.have.length(3);
 
-        // test('fires lasers', function(done) {
-        //   myEl.addEventListener('material-table-lasers', function(event) {
-        //     assert.equal(event.detail.sound, 'Pew pew!');
-        //     done();
-        //   });
-        //   myEl.fireLasers();
-        // });
+          expect(theCells[0]).to.have.property('hidden').that.is.false;
+          expect(theCells[1]).to.have.property('hidden').that.is.false;
+          expect(theCells[2]).to.have.property('hidden').that.is.true;
+
+          expect(theCells[0]).to.have.property('innerText').that.has.string('B');
+          expect(theCells[1]).to.have.property('innerText').that.has.string('1020.27');
+          expect(theCells[2]).to.have.property('innerText').that.has.string('102026');
+
+          // check alignment
+          expect(theCells[0].classList.contains('mdl-data-table__cell--non-numeric')).to.be.true;
+          expect(theCells[1].classList.contains('mdl-data-table__cell--non-numeric')).to.be.false;
+          expect(theCells[2].classList.contains('mdl-data-table__cell--non-numeric')).to.be.false;
+
+        });
+
+        test('Hide and Show Second Column', function() {
+          expect(myEl).to.be.ok;
+
+          var thEle = myEl.getElementsByTagName('th');
+          expect(thEle).to.be.ok;
+          expect(thEle).to.have.length(3);
+
+          // first and second visible, third hidden.
+          expect(thEle[1]).to.have.property('hidden').that.is.false;
+
+          var theRows = myEl.querySelectorAll('tbody tr');
+          expect(theRows).to.be.ok;
+          expect(theRows).to.have.length(4);
+
+          var row1 = theRows[0];
+          expect(row1).to.be.ok;
+          var theCells = row1.getElementsByTagName('td');
+          expect(theCells).to.be.ok;
+          expect(theCells).to.have.length(3);
+
+
+          var menu = myEl.querySelector('mat-menu#columnSelectorMenu');
+          expect(menu).to.be.ok;
+
+          var menuOptions = menu.querySelectorAll('mat-option');
+          expect(menuOptions).to.be.ok;
+          expect(menuOptions).to.have.length(3);
+
+          expect(menuOptions[0]).to.have.property('active').that.is.true;
+          expect(menuOptions[1]).to.have.property('active').that.is.true;
+          expect(menuOptions[2]).to.have.property('active').that.is.false;
+
+          menuOptions[1].fire('tap');
+          Polymer.dom.flush();
+
+          expect(menuOptions[1]).to.have.property('active').that.is.false;
+          expect(thEle[1]).to.have.property('hidden').that.is.true;
+          expect(theCells[1]).to.have.property('hidden').that.is.true;
+
+          menuOptions[1].fire('tap');
+          Polymer.dom.flush();
+
+          expect(menuOptions[1]).to.have.property('active').that.is.true;
+          expect(thEle[1]).to.have.property('hidden').that.is.false;
+          expect(theCells[1]).to.have.property('hidden').that.is.false;
+
+
+          menuOptions[2].fire('tap');
+          Polymer.dom.flush();
+
+          expect(menuOptions[2]).to.have.property('active').that.is.true;
+          expect(thEle[2]).to.have.property('hidden').that.is.false;
+          expect(theCells[2]).to.have.property('hidden').that.is.false;
+
+        });
+
+        test('Row Selection 1', function(done) {
+          expect(myEl).to.be.ok;
+
+          var theRows = myEl.querySelectorAll('tbody tr');
+          expect(theRows).to.be.ok;
+          expect(theRows).to.have.length(4);
+
+          var row2 = theRows[1];
+          expect(row2).to.be.ok;
+
+          var selectfn =  function(event) {
+            expect(event).to.have.property('detail').to.be.an('object');
+            expect(event.detail).to.have.property('sensor').that.equals('H');
+            expect(event.detail).to.have.property('value').that.equals(86.5);
+
+            myEl.removeEventListener('row-selected',selectfn);
+            done();
+         };
+
+          myEl.addEventListener('row-selected',selectfn);
+
+          row2.dispatchEvent(new CustomEvent('tap'));
+        });
+
+        test('Row Selection 2', function(done) {
+          expect(myEl).to.be.ok;
+
+
+          var theRows = myEl.querySelectorAll('tbody tr');
+          expect(theRows).to.be.ok;
+          expect(theRows).to.have.length(4);
+
+          var row3 = theRows[2];
+          expect(row3).to.be.ok;
+
+          var selectfn =  function(event) {
+            expect(event).to.have.property('detail').to.be.an('object');
+            expect(event.detail).to.have.property('sensor').that.equals('T');
+            expect(event.detail).to.have.property('value').that.equals(3.437);
+
+            myEl.removeEventListener('row-selected',selectfn);
+            done();
+         };
+
+          myEl.addEventListener('row-selected',selectfn);
+          row3.dispatchEvent(new CustomEvent('tap'));
+        });
 
       });
   </script>
