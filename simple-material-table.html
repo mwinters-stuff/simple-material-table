@@ -230,7 +230,7 @@ Example:
           </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tableBody">
           <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable">
             <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
               <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
@@ -314,7 +314,8 @@ Example:
       tableData: {
         type: Array,
         notify: true,
-        value: []
+        value: [],
+        observe: '_tableDataChanged'
       },
 
       /**
@@ -384,7 +385,16 @@ Example:
 
     observers: [
       '_sortColumnAscChanged(sortColumnAsc)',
+      '_tableDataChanged(tableData)'
     ],
+
+    _tableDataChanged: function(){
+      if(this.lastSelectedElement){
+        this.lastSelectedElement.classList.remove('is-selected');
+      }
+      this.selectedTableRow = -1;
+      this.lastSelectedElement = null;
+    },
 
     _cellData: function(itemrow, column){
       return column.formatter ? column.formatter(itemrow[column.column]) : itemrow[column.column];
@@ -406,16 +416,21 @@ Example:
 
     _rowTap: function(e) {
       console.log('_rowTap', e);
-      var toSelect = e.model.row_index;
-      var lastSelected = this.selectedTableRow;
       var element = null;
-
       for (var i = 0; i < e.path.length; i++) {
         if (e.path[i].tagName === "TR") {
           element = e.path[i];
           break;
         }
       }
+      this._selectRowIndex(e.model.row_index,element);
+    },
+
+    _selectRowIndex: function(toSelect,element){
+
+      var lastSelected = this.selectedTableRow;
+
+
       if(element){
         if(lastSelected > -1){
           if(this.lastSelectedElement){
@@ -429,11 +444,11 @@ Example:
           this.selectedTableRow = toSelect;
           element.classList.add('is-selected');
 
-          if(lastSelected){
+          if(lastSelected > -1){
             this.fire('row-unselected',lastSelected);
           }
 
-          this.fire('row-selected',e.model.itemrow);
+          this.fire('row-selected',element.row);
           this.lastSelectedElement = element;
         }
       }
@@ -525,6 +540,17 @@ Example:
 
     },
 
+    selectRow: function(column, value){
+      var elements = Polymer.dom(this.$.tableBody).querySelectorAll('tr');
+      for(var i = 0; i < elements.length; i++){
+        if(elements[i].row[column] === value){
+          console.log('selectRow',i,elements[i]);
+          this._selectRowIndex(i,elements[i]);
+          return;
+        }
+      }
+      this._selectRowIndex(this.selectedTableRow);
+    },
 
   });
 </script>
