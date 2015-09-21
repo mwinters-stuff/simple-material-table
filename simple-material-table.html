@@ -156,6 +156,9 @@ Example:
     div.spacer{
       @apply(--layout-flex);
     }
+    div.horizontal-scroll{
+        overflow-x:auto;
+    }
 
     mat-icon.small{
       height: 16px;
@@ -218,28 +221,30 @@ Example:
         </div>
       </div>
 
-      <table  id="theTable" class="mdl-data-table mdl-js-data-table">
-        <thead>
-          <tr>
-            <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
-              <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]" >
-                <mat-icon class="small" hidden name="[[sortColumnIcon]]"></mat-icon>
-                <span>{{column.title}}</span>
-              </th>
-            </template>
-          </tr>
-        </thead>
-
-        <tbody id="tableBody">
-          <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable">
-            <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
-              <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
-                <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]" >{{_cellData(itemrow, column)}}</td>
+      <div class="horizontal-scroll">
+        <table  id="theTable" class="mdl-data-table mdl-js-data-table">
+          <thead>
+            <tr>
+              <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+                <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]" >
+                  <mat-icon class="small" hidden name="[[sortColumnIcon]]"></mat-icon>
+                  <span>{{column.title}}</span>
+                </th>
               </template>
             </tr>
-          </template>
-        </tbody>
+          </thead>
+
+          <tbody id="tableBody">
+            <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable">
+              <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
+                <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+                  <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]" >{{_cellData(itemrow, column)}}</td>
+                </template>
+              </tr>
+            </template>
+          </tbody>
         </table>
+      </div>
     </mat-paper>
   </template>
 
