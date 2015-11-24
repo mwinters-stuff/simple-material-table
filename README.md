@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/wintersandroid/simple-material-table.svg)](https://travis-ci.org/wintersandroid/simple-material-table)
 # simple-material-table
 
 A web component that provides a material design table.

@@ -99,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           var title = myEl.querySelector('div.title');
           expect(title).to.be.ok;
-          expect(title).to.have.property('innerText').that.equals('Test Table Title');
+          expect((title.innerText || title.textContent).trim()).to.equal('Test Table Title');
 
           var thEle = myEl.getElementsByTagName('th');
           expect(thEle).to.be.ok;
@@ -110,9 +110,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(thEle[1]).to.have.property('hidden').that.is.false;
           expect(thEle[2]).to.have.property('hidden').that.is.true;
 
-          expect(thEle[0]).to.have.property('innerText').that.has.string('Sensor');
-          expect(thEle[1]).to.have.property('innerText').that.has.string('Value');
-          expect(thEle[2]).to.have.property('innerText').that.has.string('Raw Value');
+          expect((thEle[0].innerText || thEle[0].textContent).trim()).to.equal('Sensor');
+          expect((thEle[1].innerText || thEle[1].textContent).trim()).to.equal('Value');
+          expect((thEle[2].innerText || thEle[2].textContent).trim()).to.equal('Raw Value');
 
           // check alignment
           expect(thEle[0].classList.contains('mdl-data-table__cell--non-numeric')).to.be.true;
@@ -137,9 +137,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(theCells[1]).to.have.property('hidden').that.is.false;
           expect(theCells[2]).to.have.property('hidden').that.is.true;
 
-          expect(theCells[0]).to.have.property('innerText').that.has.string('B');
-          expect(theCells[1]).to.have.property('innerText').that.has.string('1020.27');
-          expect(theCells[2]).to.have.property('innerText').that.has.string('102026');
+          expect((theCells[0].innerText || theCells[0].textContent).trim()).to.equal('B');
+          expect((theCells[1].innerText || theCells[1].textContent).trim()).to.equal('1020.27');
+          expect((theCells[2].innerText || theCells[2].textContent).trim()).to.equal('102026');
 
           // check alignment
           expect(theCells[0].classList.contains('mdl-data-table__cell--non-numeric')).to.be.true;
@@ -224,8 +224,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          };
 
           myEl.addEventListener('row-selected',selectfn);
-
-          row2.dispatchEvent(new CustomEvent('tap'));
+          var evt = new CustomEvent('tap', { bubbles: true, cancelable: true });
+          row2.dispatchEvent(evt);
         });
 
         test('Row Selection 2', function(done) {
@@ -249,7 +249,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          };
 
           myEl.addEventListener('row-selected',selectfn);
-          row3.dispatchEvent(new CustomEvent('tap'));
+          var evt = new CustomEvent('tap', { bubbles: true, cancelable: true });
+          row3.dispatchEvent(evt);
         });
 
       });
