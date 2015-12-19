@@ -22,11 +22,11 @@
     "/demo/"
   ],
   "dependencies": {
-    "mat-paper": "ExpandJS/mat-paper#~0.9.5",
-    "mat-icon-button": "ExpandJS/mat-icon-button#~0.9.5",
-    "mat-icon": "ExpandJS/mat-icon#~0.9.5",
-    "mat-menu": "ExpandJS/mat-menu#~0.9.5",
-    "mat-option": "ExpandJS/mat-option#~0.9.5",
+    "mat-paper": "ExpandJS/mat-paper#~0.10.0",
+    "mat-icon-button": "ExpandJS/mat-icon-button#~0.10.0",
+    "mat-icon": "ExpandJS/mat-icon#~0.10.0",
+    "mat-menu": "ExpandJS/mat-menu#~0.10.0",
+    "mat-option": "ExpandJS/mat-option#~0.10.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.3"
   },
   "devDependencies": {

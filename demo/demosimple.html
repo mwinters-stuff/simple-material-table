@@ -202,7 +202,13 @@
                 "rawValue": "0"
             }
         ];
-      },
+
+      window.setInterval(function(){
+        for(var i = 0; i < this.tableData.length; i++){
+          this.set(['tableData',i,'value'],this.tableData[i].value + 0.10);
+        }
+      }.bind(this),1000);
+    },
 
     });
   </script>

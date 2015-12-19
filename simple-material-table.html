@@ -231,15 +231,15 @@ Example:
         </thead>
 
         <tbody id="tableBody">
-          <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable">
+          <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable" observe="tableData.*">
             <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
-              <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+              <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden itemrow tableData.*">
                 <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]" >{{_cellData(itemrow, column)}}</td>
               </template>
             </tr>
           </template>
         </tbody>
-        </table>
+      </table>
     </mat-paper>
   </template>
 
@@ -313,9 +313,9 @@ Example:
        */
       tableData: {
         type: Array,
-        notify: true,
+        // notify: true,
         value: [],
-        observe: '_tableDataChanged'
+        // observe: '_tableDataChanged'
       },
 
       /**
@@ -356,7 +356,7 @@ Example:
        */
       columns: {
         type: Array,
-        notify: true,
+        // notify: true,
         value: function() {
           return [];
         }
@@ -376,7 +376,7 @@ Example:
        */
       sortColumnAsc:{
         type: Boolean,
-        notify: true,
+        // notify: true,
         value: false,
         observe: '_sortColumnAscChanged'
       },
@@ -385,15 +385,22 @@ Example:
 
     observers: [
       '_sortColumnAscChanged(sortColumnAsc)',
-      '_tableDataChanged(tableData)'
+      '_tableDataChanged(tableData.*)'
     ],
 
-    _tableDataChanged: function(){
+    _tableDataChanged: function(value){
       if(this.lastSelectedElement){
         this.lastSelectedElement.classList.remove('is-selected');
       }
       this.selectedTableRow = -1;
       this.lastSelectedElement = null;
+      this.$.dataTemplate.render();
+      var elements = Polymer.dom(this.$.tableBody).querySelectorAll('template');
+      for(var i = 0; i < elements.length; i++){
+        elements[i].render();
+      }
+
+      console.log('simple-material-table','tabledatachanged',value);
     },
 
     _cellData: function(itemrow, column){
@@ -501,6 +508,10 @@ Example:
         r = 1;
       }
       return this.sortColumnAsc ? -r : r;
+    },
+
+    _filterTable: function(a){
+      return true;
     },
 
     _sortIconHidden: function(column_index){
