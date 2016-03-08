@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright (c) 2015 Mathew Winters. All rights reserved.
+Copyright (c) 2016 Mathew Winters. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
@@ -173,6 +173,7 @@ Example:
 
     .header{
       height: 24px;
+      padding-top: 16px;
       margin-bottom: 8px;
       margin-left: 16px;
       margin-right: 16px;
@@ -400,7 +401,7 @@ Example:
         elements[i].render();
       }
 
-      console.log('simple-material-table','tabledatachanged',value);
+      //console.log('simple-material-table','tabledatachanged',value);
     },
 
     _cellData: function(itemrow, column){
@@ -422,7 +423,7 @@ Example:
     },
 
     _rowTap: function(e) {
-      console.log('_rowTap', e);
+      //console.log('_rowTap', e);
       var element = null;
       for (var i = 0; i < e.path.length; i++) {
         if (e.path[i].tagName === "TR") {
@@ -463,7 +464,7 @@ Example:
     },
 
     _onTapHeader: function(e){
-      console.log('_onTapHeader',e);
+      //console.log('_onTapHeader',e);
 
       var element = null;
       for (var i = 0; i < e.path.length; i++) {
