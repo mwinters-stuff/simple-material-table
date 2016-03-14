@@ -22,4 +22,5 @@ addons:
       - google-chrome-stable
 script:
   - xvfb-run wct
+  - bash ./gpages_build.sh wintersandroid simple-material-table travis androidapps@winters.org.nz
 #  - "if [ \"${TRAVIS_PULL_REQUEST}\" = \"false\" ]; then wct --plugin sauce; fi"
