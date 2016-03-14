@@ -169,10 +169,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(theCells).to.have.length(3);
 
 
-          var menu = myEl.querySelector('mat-menu#columnSelectorMenu');
+          var menu = myEl.querySelector('paper-menu#columnSelectorMenu');
           expect(menu).to.be.ok;
 
-          var menuOptions = menu.querySelectorAll('mat-option');
+          var menuOptions = menu.querySelectorAll('paper-item');
           expect(menuOptions).to.be.ok;
           expect(menuOptions).to.have.length(3);
 
@@ -180,14 +180,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(menuOptions[1]).to.have.property('active').that.is.true;
           expect(menuOptions[2]).to.have.property('active').that.is.false;
 
-          menuOptions[1].fire('tap');
+          var checkbox = menuOptions[1].getElementsByTagName('paper-checkbox')[0];
+          expect(checkbox).to.be.ok;
+          checkbox.fire('tap');
           Polymer.dom.flush();
 
           expect(menuOptions[1]).to.have.property('active').that.is.false;
           expect(thEle[1]).to.have.property('hidden').that.is.true;
           expect(theCells[1]).to.have.property('hidden').that.is.true;
 
-          menuOptions[1].fire('tap');
+          checkbox = menuOptions[1].getElementsByTagName('paper-checkbox')[0];
+          expect(checkbox).to.be.ok;
+          checkbox.fire('tap');
           Polymer.dom.flush();
 
           expect(menuOptions[1]).to.have.property('active').that.is.true;
@@ -195,7 +199,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(theCells[1]).to.have.property('hidden').that.is.false;
 
 
-          menuOptions[2].fire('tap');
+          checkbox = menuOptions[2].getElementsByTagName('paper-checkbox')[0];
+          expect(checkbox).to.be.ok;
+          checkbox.fire('tap');
           Polymer.dom.flush();
 
           expect(menuOptions[2]).to.have.property('active').that.is.true;
