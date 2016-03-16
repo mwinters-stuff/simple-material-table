@@ -35,8 +35,9 @@ Example:
 -->
 
 <dom-module id="simple-material-table">
+  <template>
 
-  <style>
+  <style is="custom-style">
     paper-material.simple-material-table {
       background-color: white;
     }
@@ -167,11 +168,12 @@ Example:
       /*color: rgba(0, 0, 0, .87);*/
       padding: 0px;
     }
+
     div.button-bar {
       padding: 0px;
-
     }
-    .paper-icon-button-0  {
+
+    .paper-icon-button-0 {
       vertical-align: top;
     }
 
@@ -183,7 +185,6 @@ Example:
       color: rgba(0, 0, 0, 0.87);
     }
 
-
     .header {
       height: 24px;
       padding-top: 16px;
@@ -194,7 +195,6 @@ Example:
     }
   </style>
 
-  <template>
     <paper-material elevation="1">
       <div class="card-content">
         <div class="header">
@@ -229,7 +229,7 @@ Example:
           </thead>
 
           <tbody id="tableBody">
-            <template id="dataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable" observe="tableData.*">
+            <template id="simpleDataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable" observe="tableData.*">
               <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
                 <template id="dataTemplateColumns" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden itemrow columns.* tableData.*">
                   <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]">{{_cellData(itemrow, column)}}</td>
@@ -387,21 +387,19 @@ Example:
       '_tableDataChanged(tableData.*)'
     ],
 
-    _tableDataChanged: function(value) {
-      //console.log('tabledatachanged');
-      if (this.lastSelectedElement) {
-        this.lastSelectedElement.classList.remove('is-selected');
+    _tableDataChanged: function() {
+      if(this.isReady && this.$.simpleDataTemplate && this.$.simpleDataTemplate.render) {
+        if (this.lastSelectedElement) {
+          this.lastSelectedElement.classList.remove('is-selected');
+        }
+        this.selectedTableRow = -1;
+        this.lastSelectedElement = null;
+        this.$.simpleDataTemplate.render();
+        var elements = Polymer.dom(this.$.tableBody).querySelectorAll('template');
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].render();
+        }
       }
-      this.selectedTableRow = -1;
-      this.lastSelectedElement = null;
-      this.$.dataTemplate.render();
-      var elements = Polymer.dom(this.$.tableBody).querySelectorAll('template');
-      for (var i = 0; i < elements.length; i++) {
-        //console.log('render',i);
-        elements[i].render();
-      }
-
-      //console.log('simple-material-table','tabledatachanged',value);
     },
 
     _cellData: function(itemrow, column) {
@@ -427,7 +425,7 @@ Example:
       //console.log('_rowTap', e);
       var element = null;
       for (var i = 0; i < e.path.length; i++) {
-        if (e.path[i].tagName === "TR") {
+        if (e.path[i].tagName === 'TR') {
           element = e.path[i];
           break;
         }
@@ -469,7 +467,7 @@ Example:
 
       var element = null;
       for (var i = 0; i < e.path.length; i++) {
-        if (e.path[i].tagName === "TH") {
+        if (e.path[i].tagName === 'TH') {
           element = e.path[i];
           break;
         }
@@ -491,7 +489,7 @@ Example:
       iconElement.hidden = false;
 
       //this.$.headerTemplate.render();
-      this.$.dataTemplate.render();
+      this.$.simpleDataTemplate.render();
     },
 
     _sortTable: function(a, b) {
@@ -510,7 +508,7 @@ Example:
       return this.sortColumnAsc ? -r : r;
     },
 
-    _filterTable: function(a) {
+    _filterTable: function() {
       return true;
     },
 
@@ -545,6 +543,7 @@ Example:
     },
 
     ready: function() {
+      this.isReady = true;
       this.selectedTableRow = -1;
       this.lastSelectedElement = null;
       this.currentSortHeaderElement = null;
