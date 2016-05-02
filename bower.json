@@ -12,7 +12,7 @@
     "table",
     "material"
   ],
-  "main": "material-table.html",
+  "main": "simple-material-table.html",
   "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/wintersandroid/simple-material-table/",
   "ignore": [
