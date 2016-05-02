@@ -1,6 +1,14 @@
 language: node_js
 sudo: required
-dist: trusty
+before_script:
+  - npm install -g bower polylint web-component-tester
+  - bower install
+  - polylint
+env:
+  global:
+    - secure: NCk3KK+wbaXMzp8XAY6FeL+TSdI0AlPI3/tl0OpsUIaU2EiCjQuzf/UpyzCW5XZMEVFF4q/eDjrPkqJodHfpngj36mpkfmfqj9DrgDmYsV9BDvsTd8KmLsA6H8D6p7Qer+r1JMMB8PvX44vdhQ6GhZD1HFNYK1Ekpt0TkYwWKNw=
+    - secure: TGgUEQe6FJS+GuYk94d//8YQmDLUu0ekMvPSIs8TQ2QkdBK4SL+2bSXZt44BbDEOwc9P4NCPSUx/RMiCAqsc5OGRJImzb/zqPNIDTeKG6q72HPBBBD3Sk0CrEpTQbOK/Flaa/B7RYR0U1kuljSmRS7lPG19nnY8gOHnIAgwIyk0=
+node_js: stable
 addons:
   firefox: latest
   apt:
@@ -8,22 +16,8 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
-node_js:
-  - '0.12'
-  - '4.2'
-  - '5.1'
-cache:
-  directories:
-    - node_modules
-before_script:
-  - 'export DISPLAY=:99.0'
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3
-  - npm i -g bower@1.7.1 gulp@3.9.0 firebase-tools@2.2.0
-  - bower i
+  sauce_connect: true
 script:
-#  - ./travis-runner.sh
-   - xvfb-run wct
-env:
-  global:
-    - secure: SbcQ7plU7aRGQlaAG2ffMhSvEs84073YSljOQ62DZAjRxgizMhF4xM7H2mPrmac9YRM4IBrQRvBKMMZy3L6OhN8gwpm8o+w2zV+5Q1fwpY9V8bilznnhp1JUY6jrB2l7aLTOFxt/cG+5ABxiupwWz/n+I7BaByYhBiHWntIBgDc528eecRNDYI5R36KWjLO/yr+SdElvyxDlDOdJGaluPvgMItbinFGcE1hYb/Jqrkkw8zpE6CTDmvMOq1aRBWSo9afgh2zDeKc02lTYP/4N0xcn8CqzHF7k5zGWHjN9DR8Ep8Bp1ff/sM7zHGZBqgVhn5WGv305jBQY6eOxiTp5cDP0WVIOjgJeM5rBu9hBQxhZSaMKBPr2B1NYUjIwTVQkBsnR4sr095Ugjg8JCZAmEevf/Ysl4CzQyW3gT+WcEluqjxUuicQWDclH6L/kOVPBJ+Eqdo/LY3G1tpLcc6fsvj4FlVO6LPTrbMyCagwQvnjX3uIdFyuthqtWWrHKQMGx2Ow9suNUi8Hyvk7WboS1Z6jrLIcs1rvXSX8rQmlMR5vJBK3Ejg6fS1OHxn/lrtLhj4lDLB9r/Fcu2PEHT1lcvQqsTa3W+t4Fk1qaShUlBDiwMbZWZgmlf1SdG5OzK1yrPLjTTdRFdqJGgb6TANCdetgczRWynvjIhr5IDMxvfJg=
+  - xvfb-run wct
+  - "if [ \"${TRAVIS_PULL_REQUEST}\" = \"false\" ]; then wct -s 'default'; fi"
+dist: trust
