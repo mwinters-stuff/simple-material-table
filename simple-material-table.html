@@ -5,7 +5,7 @@ This code may only be used under the BSD style license found at http://polymer.g
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
@@ -37,7 +37,7 @@ Example:
 <dom-module id="simple-material-table">
   <template>
 
-  <style is="custom-style">
+    <style>
     paper-material.simple-material-table {
       background-color: white;
     }
@@ -193,61 +193,65 @@ Example:
       margin-right: 16px;
       margin-top: 16px;
     }
+    [hidden] {
+      display: none !important;
+    }
   </style>
 
-    <paper-material elevation="1">
-      <div class="card-content">
-        <div class="header">
-          <div class="title">{{title}}</div>
-          <div class="spacer"></div>
-          <div class="button-bar">
-            <paper-icon-button class="small" id="actionAdd" icon="table:add" on-tap="_tapActionAdd" hidden$="[[!showActionAdd]]"></paper-icon-button>
-            <paper-icon-button class="small" id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionEdit]]"></paper-icon-button>
-            <paper-icon-button class="small" id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionDelete]]"></paper-icon-button>
-            <paper-menu-button hidden$="[[!showColumnSelector]]" horizontal-align="right" vertical-align="top" class="small">
-              <paper-icon-button class="dropdown-trigger small" id="columnSelectorButton" icon="table:filter"></paper-icon-button>
-              <paper-menu id="columnSelectorMenu" multi class="dropdown-content">
-                <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index">
-                  <paper-item role="menuitemcheckbox" active="{{!column.hidden}}" toggles column="[[column]]" on-tap="_selectColumn" column-index="[[column_index]]">
-                    <paper-item-body>[[column.title]]</paper-item-body>
-                    <paper-checkbox checked="{{!column.hidden}}"></paper-checkbox>
-                </template>
-              </paper-menu>
-            </paper-menu-button>
-          </div>
-        </div>
-        <table id="theTable" class="mdl-data-table mdl-js-data-table">
-          <thead>
-            <tr>
-              <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
-                <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]">
-                  <iron-icon class="small" hidden icon="[[sortColumnIcon]]"></iron-icon>
-                  <span>{{column.title}}</span>
-                </th>
-              </template>
-            </tr>
-          </thead>
-
-          <tbody id="tableBody">
-            <template id="simpleDataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable" observe="tableData.*">
-              <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
-                <template id="dataTemplateColumns" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden itemrow columns.* tableData.*">
-                  <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]">{{_cellData(itemrow, column)}}</td>
-                </template>
-              </tr>
+<paper-material elevation="1">
+  <div class="card-content">
+    <div class="header">
+      <div class="title">{{title}}</div>
+      <div class="spacer"></div>
+      <div class="button-bar">
+        <paper-icon-button class="small" id="actionAdd" icon="table:add" on-tap="_tapActionAdd" hidden$="[[!showActionAdd]]"></paper-icon-button>
+        <paper-icon-button class="small" id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]"
+          hidden$="[[!showActionEdit]]"></paper-icon-button>
+        <paper-icon-button class="small" id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]"
+          hidden$="[[!showActionDelete]]"></paper-icon-button>
+        <paper-menu-button hidden$="[[!showColumnSelector]]" horizontal-align="right" vertical-align="top" class="small">
+          <paper-icon-button class="dropdown-trigger small" id="columnSelectorButton" icon="table:filter"></paper-icon-button>
+          <paper-menu id="columnSelectorMenu" multi class="dropdown-content">
+            <template is="dom-repeat" items="[[columns]]" as="column" index-as="column_index">
+              <paper-item role="menuitemcheckbox" active="{{!column.hidden}}" toggles column="[[column]]" on-tap="_selectColumn" column-index="[[column_index]]">
+                <paper-item-body>[[column.title]]</paper-item-body>
+                <paper-checkbox checked="{{!column.hidden}}"></paper-checkbox>
             </template>
-          </tbody>
-        </table>
+          </paper-menu>
+        </paper-menu-button>
       </div>
-    </paper-material>
-  </template>
+    </div>
+    <table id="theTable" class="mdl-data-table mdl-js-data-table">
+      <thead>
+        <tr>
+          <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+            <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]">
+              <iron-icon class="small" hidden icon="[[sortColumnIcon]]"></iron-icon>
+              <span>{{column.title}}</span>
+            </th>
+          </template>
+        </tr>
+      </thead>
 
-</dom-module>
+      <tbody id="tableBody">
+        <template id="simpleDataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable"
+          observe="tableData.*">
+          <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
+            <template id="dataTemplateColumns" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden itemrow columns.* tableData.*">
+              <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]">{{_cellData(itemrow, column)}}</td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</paper-material>
+</template>
 
 <script>
-  Polymer({
+  class SimpleMaterialTable extends Polymer.Element {
 
-    is: 'simple-material-table',
+    static get is() { return 'simple-material-table'; }
 
     /**
      * The `row-selected` event is fired when a row is selected
@@ -298,130 +302,143 @@ Example:
      * @detail {{row: Object}}
      */
 
+    static get config() {
+      return {
+        properties: {
+          /**
+           * Title for display at the top of the card.
+           */
+          title: {
+            type: String
+          },
 
-    properties: {
-      /**
-       * Title for display at the top of the card.
-       */
-      title: {
-        type: String
-      },
+          /**
+           * Array of objects to display
+           */
+          tableData: {
+            type: Array,
+            // notify: true,
+            value: [],
+            // observe: '_tableDataChanged'
+          },
 
-      /**
-       * Array of objects to display
-       */
-      tableData: {
-        type: Array,
-        // notify: true,
-        value: [],
-        // observe: '_tableDataChanged'
-      },
+          /**
+           * Show add action
+           */
+          showActionAdd: {
+            type: Boolean,
+            value: false
+          },
 
-      /**
-       * Show add action
-       */
-      showActionAdd: {
-        type: Boolean,
-        value: false
-      },
+          /**
+           * Show` edit action
+           */
+          showActionEdit: {
+            type: Boolean,
+            value: false
+          },
 
-      /**
-       * Show edit action
-       */
-      showActionEdit: {
-        type: Boolean,
-        value: false
-      },
+          /**
+           * Show delete action.
+           */
+          showActionDelete: {
+            type: Boolean,
+            value: false
+          },
 
-      /**
-       * Show delete action.
-       */
-      showActionDelete: {
-        type: Boolean,
-        value: false
-      },
+          /**
+           * Show the column selector menu 
+           **/
+           showColumnSelector:{
+             type: Boolean,
+             value: false
+           },
 
-      /**
-       * Column definitions, array of objects
-       * ### Each column is defined as
-       *  Attribute | Type        | Description
-       * -----------|-------------|------------------
-       *    title| String| column title
-       *   number| Boolean|  true of column is a number
-       *   column| String| field name of column in data object
-       *   hidden| Boolean| default to hidden (true) or not (false)
-       *  formatter| function | if set, is a function taking value returning formatted value.
-       *
-       */
-      columns: {
-        type: Array,
-        // notify: true,
-        value: function() {
-          return [];
-        }
-      },
+          /**
+           * Column definitions, array of objects
+           * ### Each column is defined as
+           *  Attribute | Type        | Description
+           * -----------|-------------|------------------
+           *    title| String| column title
+           *   number| Boolean|  true of column is a number
+           *   column| String| field name of column in data object
+           *   hidden| Boolean| default to hidden (true) or not (false)
+           *  formatter| function | if set, is a function taking value returning formatted value.
+           *
+           */
+          columns: {
+            type: Array,
+            // notify: true,
+            value: function () {
+              return [];
+            }
+          },
 
-      /**
-       * Sort column index within `columns`.
-       */
-      sortColumnIndex: {
-        type: Number,
-        notify: true,
-        value: 0
-      },
+          /**
+           * Sort column index within `columns`.
+           */
+          sortColumnIndex: {
+            type: Number,
+            notify: true,
+            value: 0
+          },
 
-      /**
-       * Sort is ascending (true) or descending (false).
-       */
-      sortColumnAsc: {
-        type: Boolean,
-        // notify: true,
-        value: false,
-        observe: '_sortColumnAscChanged'
-      },
+          /**
+           * Sort is ascending (true) or descending (false).
+           */
+          sortColumnAsc: {
+            type: Boolean,
+            // notify: true,
+            value: false,
+            observe: '_sortColumnAscChanged'
+          },
 
-    },
+        },
 
-    observers: [
-      '_sortColumnAscChanged(sortColumnAsc)',
-      '_tableDataChanged(tableData.*)'
-    ],
 
-    _tableDataChanged: function() {
-      if(this.isReady && this.$.simpleDataTemplate && this.$.simpleDataTemplate.render) {
+        observers: [
+          '_sortColumnAscChanged(sortColumnAsc)',
+          '_tableDataChanged(tableData.*)'
+        ]
+      }
+    }
+
+    _tableDataChanged() {
+      if (this.isReady && this.$.simpleDataTemplate && this.$.simpleDataTemplate.render) {
         if (this.lastSelectedElement) {
           this.lastSelectedElement.classList.remove('is-selected');
         }
         this.selectedTableRow = -1;
         this.lastSelectedElement = null;
         this.$.simpleDataTemplate.render();
-        var elements = Polymer.dom(this.$.tableBody).querySelectorAll('template');
-        for (var i = 0; i < elements.length; i++) {
-          elements[i].render();
-        }
+        
+        // var elements = Polymer.dom(this.$.tableBody).querySelectorAll('template');
+        // for (var i = 0; i < elements.length; i++) {
+        //   elements[i].render();
+        // }
       }
-    },
+    }
 
-    _cellData: function(itemrow, column) {
+    _cellData(itemrow, column) {
       //console.log("celldata",itemrow,column);
       return column.formatter ? column.formatter(itemrow[column.column]) : itemrow[column.column];
-    },
+    }
 
-    _columnClass: function(index) {
+    _columnClass(index) {
       if (this.columns && index < this.columns.length) {
         return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric';
       }
       return 'mdl-data-table__cell--non-numeric';
-    },
+    }
 
-    _columnHeaderClass: function(index) {
+    _columnHeaderClass(index) {
       if (this.columns && index < this.columns.length) {
         return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric ';
       }
       return 'mdl-data-table__cell--non-numeric';
-    },
+    }
 
-    _rowTap: function(e) {
+    _rowTap(e) {
       //console.log('_rowTap', e);
       var element = null;
       for (var i = 0; i < e.path.length; i++) {
@@ -431,9 +448,9 @@ Example:
         }
       }
       this._selectRowIndex(e.model.row_index, element);
-    },
+    }
 
-    _selectRowIndex: function(toSelect, element) {
+    _selectRowIndex(toSelect, element) {
 
       var lastSelected = this.selectedTableRow;
 
@@ -460,9 +477,9 @@ Example:
         }
       }
 
-    },
+    }
 
-    _onTapHeader: function(e) {
+    _onTapHeader(e) {
       //console.log('_onTapHeader',e);
 
       var element = null;
@@ -490,9 +507,9 @@ Example:
 
       //this.$.headerTemplate.render();
       this.$.simpleDataTemplate.render();
-    },
+    }
 
-    _sortTable: function(a, b) {
+    _sortTable(a, b) {
       var r = 0;
       var column = this.columns[this.sortColumnIndex].column;
 
@@ -506,51 +523,52 @@ Example:
         r = 1;
       }
       return this.sortColumnAsc ? -r : r;
-    },
+    }
 
-    _filterTable: function() {
+    _filterTable() {
       return true;
-    },
+    }
 
-    _sortIconHidden: function(column_index) {
+    _sortIconHidden(column_index) {
       return column_index === this.sortColumnIndex;
-    },
+    }
 
-    _tapActionAdd: function() {
+    _tapActionAdd() {
       this.fire('action-add');
-    },
+    }
 
-    _tapActionEdit: function() {
+    _tapActionEdit() {
       this.fire('action-edit', this.selectedTableRow.row);
-    },
+    }
 
-    _tapActionDelete: function() {
+    _tapActionDelete() {
       this.fire('action-delete', this.selectedTableRow.row);
-    },
+    }
 
     // Element Lifecycle
-    _sortColumnAscChanged: function(value) {
+    _sortColumnAscChanged(value) {
       this.sortColumnIcon = value ? 'table:arrow-up' : 'table:arrow-down';
-    },
+    }
 
-    _toggleColumnMenu: function() {
+    _toggleColumnMenu() {
       this.$.columnSelectorMenu.toggle(this.$.columnSelectorButton);
-    },
+    }
 
-    _selectColumn: function(e) {
+    _selectColumn(e) {
       // console.log('_selectColumn',e.model.column_index);
       this.set('columns.' + e.model.column_index + '.hidden', !this.columns[e.model.column_index].hidden);
-    },
+    }
 
-    ready: function() {
+    constructor() {
+      super();
       this.isReady = true;
       this.selectedTableRow = -1;
       this.lastSelectedElement = null;
       this.currentSortHeaderElement = null;
 
-    },
+    }
 
-    selectRow: function(column, value) {
+    selectRow(column, value) {
       var elements = Polymer.dom(this.$.tableBody).querySelectorAll('tr');
       for (var i = 0; i < elements.length; i++) {
         if (elements[i].row[column] === value) {
@@ -560,7 +578,15 @@ Example:
         }
       }
       this._selectRowIndex(this.selectedTableRow);
-    },
+    }
 
-  });
+    fire(ev, data) {
+      this.dispatchEvent(new CustomEvent(ev, {
+        detail: data
+      }), { bubbles: true });
+    }
+  }
+  customElements.define(SimpleMaterialTable.is, SimpleMaterialTable);
+
 </script>
+</dom-module>
