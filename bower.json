@@ -21,6 +21,7 @@
     "/demo/"
   ],
   "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0-rc.9",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview",
     "paper-card": "PolymerElements/paper-card#2.0-preview",
     "paper-menu-button": "PolymerElements/paper-menu-button#2.0-preview",
@@ -34,6 +35,8 @@
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#2.0-preview",
-    "web-component-tester": "*"
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0-preview",
+    "web-component-tester": "^6.0.0-prerelease.5",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.5"
   }
 }

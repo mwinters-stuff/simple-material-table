@@ -41,7 +41,7 @@ Example:
       paper-material.simple-material-table {
         background-color: white;
       }
-      
+
       .mdl-data-table {
         width: 100%;
         /*position: relative;*/
@@ -51,15 +51,15 @@ Example:
         /*font-size: 13px;*/
         background-color: rgb(255, 255, 255);
       }
-      
+
       .mdl-data-table thead {
         padding-bottom: 3px;
       }
-      
+
       .mdl-data-table thead .mdl-data-table__select {
         margin-top: 0;
       }
-      
+
       .mdl-data-table tbody tr {
         position: relative;
         height: 48px;
@@ -70,46 +70,46 @@ Example:
         -webkit-transition-property: background-color;
         transition-property: background-color;
       }
-      
+
       .mdl-data-table tbody tr.is-selected {
         background-color: #e0e0e0;
       }
-      
+
       .mdl-data-table tbody tr:hover {
         background-color: #eeeeee;
       }
-      
+
       .mdl-data-table td,
       .mdl-data-table th {
         padding: 0 18px 0 18px;
         text-align: right;
       }
-      
+
       .mdl-data-table td:first-of-type,
       .mdl-data-table th:first-of-type {
         padding-left: 24px;
       }
-      
+
       .mdl-data-table td:last-of-type,
       .mdl-data-table th:last-of-type {
         padding-right: 24px;
       }
-      
+
       .mdl-data-table td {
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
       }
-      
+
       .mdl-data-table td .mdl-data-table__select {
         vertical-align: top;
         position: absolute;
         left: 24px;
       }
-      
+
       .mdl-data-table th.mdl-data-table__sort {
         color: rgba(0, 0, 0, 0.87);
       }
-      
+
       .mdl-data-table th {
         position: relative;
         vertical-align: bottom;
@@ -123,38 +123,38 @@ Example:
         padding-bottom: 8px;
         box-sizing: border-box;
       }
-      
+
       .mdl-data-table th .mdl-data-table__select {
         position: relative;
       }
-      
+
       .mdl-data-table__select {
         width: 16px;
       }
-      
+
       .mdl-data-table td.mdl-data-table__cell--non-numeric {
         text-align: left;
       }
-      
+
       .mdl-data-table th.mdl-data-table__cell--non-numeric {
         text-align: left;
       }
-      
+
       paper-card {
         /*padding: 16px;*/
         cursor: pointer;
         width: 100%;
         /*margin: 24px;*/
       }
-      
+
       div.header {
         @apply(--layout-horizontal);
       }
-      
+
       div.spacer {
         @apply(--layout-flex);
       }
-      
+
       paper-menu-button.small,
       paper-icon-button.small {
         height: 24px;
@@ -162,15 +162,15 @@ Example:
         /*color: rgba(0, 0, 0, .87);*/
         padding: 0px;
       }
-      
+
       div.button-bar {
         padding: 0px;
       }
-      
+
       .paper-icon-button-0 {
         vertical-align: top;
       }
-      
+
       .title {
         text-overflow: ellipsis;
         font-size: 20px;
@@ -178,7 +178,7 @@ Example:
         letter-spacing: 0;
         color: rgba(0, 0, 0, 0.87);
       }
-      
+
       .header {
         height: 24px;
         padding-top: 16px;
@@ -187,7 +187,7 @@ Example:
         margin-right: 16px;
         margin-top: 16px;
       }
-      
+
       [hidden] {
         display: none !important;
       }
@@ -298,106 +298,106 @@ Example:
        * @detail {{row: Object}}
        */
 
-      static get config() {
+      static get properties() {
         return {
-          properties: {
-            /**
-             * Title for display at the top of the card.
-             */
-            title: {
-              type: String
-            },
-
-            /**
-             * Array of objects to display
-             */
-            tableData: {
-              type: Array,
-              // notify: true,
-              value: [],
-              // observe: '_tableDataChanged'
-            },
-
-            /**
-             * Show add action
-             */
-            showActionAdd: {
-              type: Boolean,
-              value: false
-            },
-
-            /**
-             * Show` edit action
-             */
-            showActionEdit: {
-              type: Boolean,
-              value: false
-            },
-
-            /**
-             * Show delete action.
-             */
-            showActionDelete: {
-              type: Boolean,
-              value: false
-            },
-
-            /**
-             * Show the column selector menu 
-             **/
-            showColumnSelector: {
-              type: Boolean,
-              value: false
-            },
-
-            /**
-             * Column definitions, array of objects
-             * ### Each column is defined as
-             *  Attribute | Type        | Description
-             * -----------|-------------|------------------
-             *    title| String| column title
-             *   number| Boolean|  true of column is a number
-             *   column| String| field name of column in data object
-             *   hidden| Boolean| default to hidden (true) or not (false)
-             *  formatter| function | if set, is a function taking value returning formatted value.
-             *
-             */
-            columns: {
-              type: Array,
-              // notify: true,
-              value: function () {
-                return [];
-              }
-            },
-
-            /**
-             * Sort column index within `columns`.
-             */
-            sortColumnIndex: {
-              type: Number,
-              notify: true,
-              value: 0
-            },
-
-            /**
-             * Sort is ascending (true) or descending (false).
-             */
-            sortColumnAsc: {
-              type: Boolean,
-              // notify: true,
-              value: false,
-              observe: '_sortColumnAscChanged'
-            },
-
+          /**
+           * Title for display at the top of the card.
+           */
+          title: {
+            type: String
           },
 
+          /**
+           * Array of objects to display
+           */
+          tableData: {
+            type: Array,
+            // notify: true,
+            value: [],
+            // observe: '_tableDataChanged'
+          },
 
-          observers: [
-            '_sortColumnAscChanged(sortColumnAsc)',
-            '_tableDataChanged(tableData.*)'
-          ]
+          /**
+           * Show add action
+           */
+          showActionAdd: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Show` edit action
+           */
+          showActionEdit: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Show delete action.
+           */
+          showActionDelete: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Show the column selector menu 
+           **/
+          showColumnSelector: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Column definitions, array of objects
+           * ### Each column is defined as
+           *  Attribute | Type        | Description
+           * -----------|-------------|------------------
+           *    title| String| column title
+           *   number| Boolean|  true of column is a number
+           *   column| String| field name of column in data object
+           *   hidden| Boolean| default to hidden (true) or not (false)
+           *  formatter| function | if set, is a function taking value returning formatted value.
+           *
+           */
+          columns: {
+            type: Array,
+            // notify: true,
+            value: function () {
+              return [];
+            }
+          },
+
+          /**
+           * Sort column index within `columns`.
+           */
+          sortColumnIndex: {
+            type: Number,
+            notify: true,
+            value: 0
+          },
+
+          /**
+           * Sort is ascending (true) or descending (false).
+           */
+          sortColumnAsc: {
+            type: Boolean,
+            // notify: true,
+            value: false,
+            observe: '_sortColumnAscChanged'
+          },
+
         }
       }
+
+      static get observers() {
+        return [
+          '_sortColumnAscChanged(sortColumnAsc)',
+          '_tableDataChanged(tableData.*)'
+        ]
+      }
+
 
       _tableDataChanged() {
         if (this.isReady && this.$.simpleDataTemplate && this.$.simpleDataTemplate.render) {
@@ -564,11 +564,6 @@ Example:
 
       }
 
-      connectedCallback() {
-        this.$.simpleDataTemplate.render();
-        super.connectedCallback();
-      }
-
       selectRow(column, value) {
         var elements = Polymer.dom(this.$.tableBody).querySelectorAll('tr');
         for (var i = 0; i < elements.length; i++) {
@@ -585,10 +580,10 @@ Example:
         this.dispatchEvent(new CustomEvent(ev, {
           detail: data
         }), {
-          bubbles: true
-        });
+            bubbles: true
+          });
       }
     }
-    customElements.define(SimpleMaterialTable.is, SimpleMaterialTable);
+    window.customElements.define(SimpleMaterialTable.is, SimpleMaterialTable);
   </script>
 </dom-module>

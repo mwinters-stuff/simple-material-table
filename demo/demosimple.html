@@ -5,22 +5,22 @@
 <dom-module id="demo-simple">
   <template>
     <style>
-    :host {
-      display: block;
-    }
+       :host {
+        display: block;
+      }
 
-    div.whole {
-      width: 100%;
-    }
-  </style>
-<div class="whole">
-  <simple-material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[_tableData]]" on-row-selected="_onRowSelected"
-    on-action-add="_onActionAdd" on-action-edit="_onActionEdit" on-action-delete="_onActionDelete"
-    show-action-add show-action-edit show-action-delete show-column-selector>
-  </simple-material-table>
-</div>
-</template>
-<script>
+      div.whole {
+        width: 100%;
+      }
+    </style>
+    <div class="whole">
+      <simple-material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[_tableData]]" on-row-selected="_onRowSelected"
+        on-action-add="_onActionAdd" on-action-edit="_onActionEdit" on-action-delete="_onActionDelete" show-action-add show-action-edit
+        show-action-delete>
+      </simple-material-table>
+    </div>
+  </template>
+  <script>
     class DemoSimple extends Polymer.Element {
       static get is() { return 'demo-simple' }
 
@@ -190,7 +190,6 @@
       }
 
     }
-    customElements.define(DemoSimple.is, DemoSimple);
-
+    window.customElements.define(DemoSimple.is, DemoSimple);
   </script>
 </dom-module>
