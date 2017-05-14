@@ -28,7 +28,7 @@
     "iron-icon": "PolymerElements/iron-icon#2.0-preview",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#2.0-preview",
     "paper-icon-button": "PolymerElements/paper-icon-button#2.0-preview",
-    "paper-menu": "PolymerElements/paper-menu#_auto_generated_v2_preview",
+    "paper-listbox": "PolymerElements/paper-listbox#2.0-preview",
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0-preview",
     "paper-material": "PolymerElements/paper-material#2.0-preview"
   },
