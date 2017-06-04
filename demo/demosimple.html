@@ -1,49 +1,52 @@
-<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../polymer/polymer-element.html">
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../simple-material-table.html">
 
 <dom-module id="demo-simple">
-  <style>
-    :host {
-      display: block;
-    }
-
-    div.whole {
-      width: 100%;
-    }
-  </style>
   <template>
+    <style>
+       :host {
+        display: block;
+      }
+
+      div.whole {
+        width: 100%;
+      }
+    </style>
     <div class="whole">
-      <simple-material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[_tableData]]" on-row-selected="_onRowSelected" on-action-add="_onActionAdd" on-action-edit="_onActionEdit" on-action-delete="_onActionDelete" show-action-add show-action-delete>
+      <simple-material-table id="demo" title="Test Table" columns="[[columns]]" table-data="[[_tableData]]" on-row-selected="_onRowSelected"
+        on-action-add="_onActionAdd" on-action-edit="_onActionEdit" on-action-delete="_onActionDelete" show-action-add show-action-edit
+        show-action-delete>
       </simple-material-table>
     </div>
   </template>
   <script>
-    Polymer({
-      is: 'demo-simple',
+    class DemoSimple extends Polymer.Element {
+      static get is() { return 'demo-simple' }
 
-      _onRowSelected: function(data) {
+      _onRowSelected(data) {
         console.log('_onRowSelected', data);
-      },
+      }
 
-      _onActionAdd: function() {
+      _onActionAdd() {
         console.log('_onActionAdd');
         this.push('_tableData', {
           sensor: 'X',
           value: this._tableData.length,
           rawValue: this._tableData.length
         });
-      },
+      }
 
-      _onActionEdit: function(data) {
+      _onActionEdit(data) {
         console.log('_onActionEdit', data);
-      },
+      }
 
-      _onActionDelete: function(data) {
+      _onActionDelete(data) {
         console.log('_onActionDelete', data);
-      },
+      }
 
-      ready: function() {
+      constructor() {
+        super();
         this.columns = [{
           title: "Sensor",
           number: false,
@@ -54,7 +57,7 @@
           title: "Value",
           number: true,
           column: 'value',
-          formatter: function(value) {
+          formatter: function (value) {
             return parseFloat(value).toFixed(2);
           },
           hidden: false
@@ -63,11 +66,11 @@
           title: "Raw Value",
           number: true,
           column: 'rawValue',
-          formatter: function(value) {
+          formatter: function (value) {
             return parseFloat(value).toFixed(0);
           },
           hidden: true
-        }, ];
+        },];
 
         this._tableData = [{
           "sensor": "T",
@@ -179,13 +182,14 @@
           "rawValue": "0"
         }];
 
-        window.setInterval(function() {
+        window.setInterval(function () {
           for (var i = 0; i < this._tableData.length; i++) {
             this.set(['_tableData', i, 'value'], this._tableData[i].value + 0.10);
           }
         }.bind(this), 1000);
-      },
+      }
 
-    });
+    }
+    window.customElements.define(DemoSimple.is, DemoSimple);
   </script>
 </dom-module>
