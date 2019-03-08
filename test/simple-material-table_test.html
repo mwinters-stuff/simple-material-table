@@ -12,20 +12,16 @@
     <script src="../node_modules/chai/chai.js"></script>
     <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
 
-    <script type="module" src="../simple-material-table.js"></script>
   </head>
   <body>
-
-    <test-fixture id="BasicTestFixture">
-      <simple-material-table title="Test Table Title"
+      <simple-material-table id="smt" title="Test Table Title"
       show-action-add
       show-action-delete
-
     ></simple-material-table>
-    </test-fixture>
 
     <script type="module">
-      var myEl = document.querySelector('simple-material-table');
+    import  '../simple-material-table.js';
+      var myEl = document.getElementById('smt');
       suite('simple-material-table', () => {
 
         setup( function(){

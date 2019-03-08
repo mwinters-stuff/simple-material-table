@@ -1,7 +1,7 @@
 language: node_js
 sudo: required
 before_script:
-  - yarn install -g polymer-cli
+  - yarn global add polymer-cli
   - yarn install
 env:
   global:
