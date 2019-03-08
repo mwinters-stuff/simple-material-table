@@ -1,0 +1,21 @@
+{
+  "npm": true,
+  "plugins": {
+    "local": {
+      "browserOptions": {
+        "chrome": ["--headless", "--disable-gpu", "--no-sandbox"],
+        "firefox": ["--headless"]
+      },
+      "browsers": ["chrome", "firefox"]
+    },
+    "sauce": {
+      "browsers": [
+        {
+          "browserName": "chrome",
+          "platform": "Windows 10",
+          "version": "beta"
+        }
+      ]
+    }
+  }
+}
