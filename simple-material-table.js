@@ -1,14 +1,14 @@
-import { html, PolymerElement } from "@polymer/polymer/polymer-element.js";
-import "@polymer/paper-material/paper-material";
-import "@polymer/paper-icon-button/paper-icon-button";
-import "@polymer/paper-checkbox/paper-checkbox";
-import "@polymer/paper-listbox/paper-listbox";
-import "@polymer/paper-menu-button/paper-menu-button";
-import "@polymer/paper-item/paper-item";
-import "@polymer/paper-item/paper-item-body";
-import "@polymer/iron-flex-layout/iron-flex-layout";
-import "@polymer/iron-icon/iron-icon";
-import "./table-icons.js";
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@polymer/paper-material/paper-material.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-checkbox/paper-checkbox.js';
+import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-menu-button/paper-menu-button.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-item/paper-item-body.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
+import './table-icons.js';
 
 /**
  * `simple-material-table`
