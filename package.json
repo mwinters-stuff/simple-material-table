@@ -1,5 +1,5 @@
 {
-  "name": "@wintersandroid/simple-material-table",
+  "name": "simple-material-table",
   "version": "3.0.3",
   "authors": [
     "Mathew Winters <wintersandroid@winters.org.nz>"
@@ -16,7 +16,7 @@
     "table",
     "material"
   ],
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "license": "GPL-2.0-only",
   "homepage": "https://github.com/wintersandroid/simple-material-table/",
   "main": "simple-material-table.js",
   "dependencies": {
