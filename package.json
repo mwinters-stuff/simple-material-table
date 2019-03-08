@@ -1,9 +1,13 @@
 {
-  "name": "simple-material-table",
-  "version": "3.0.1",
+  "name": "@wintersandroid/simple-material-table",
+  "version": "3.0.2",
   "authors": [
     "Mathew Winters <wintersandroid@winters.org.nz>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wintersandroid/simple-material-table.git"
+  },
   "description": "An element providing simple material table element.",
   "keywords": [
     "web-component",

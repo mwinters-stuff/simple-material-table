@@ -3,10 +3,9 @@
   "plugins": {
     "local": {
       "browserOptions": {
-        "chrome": ["--headless", "--disable-gpu", "--no-sandbox"],
-        "firefox": ["--headless"]
+        "chrome": ["--headless", "--disable-gpu", "--no-sandbox"]
       },
-      "browsers": ["chrome", "firefox"]
+      "browsers": ["chrome"]
     },
     "sauce": {
       "browsers": [
