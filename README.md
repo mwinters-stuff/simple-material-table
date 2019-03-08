@@ -7,9 +7,9 @@ Now in Polymer 3.
 
 ## Install
 
-Install with yarn add wintersandroid/material-table
+Install with yarn add wintersandroid/simple-material-table
 or
-npm install --save wintersandroid/material-table
+npm install --save wintersandroid/simple-material-table
 
 ## Using
 
