@@ -1,4 +1,9 @@
-<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
+
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+
+const template = html`
 
 <iron-iconset-svg name="table">
   <svg>
@@ -14,3 +19,7 @@
     </defs>
   </svg>
 </iron-iconset-svg>
+`;
+
+document.head.appendChild(template.content);
+

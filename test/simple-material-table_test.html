@@ -1,39 +1,34 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>simple-material-table test</title>
 
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/@polymer/polymer/lib/utils/flush.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
 
-  <!-- Step 1: import the element to test -->
-  <link rel="import" href="../simple-material-table.html">
-</head>
+    <script type="module" src="../simple-material-table.js"></script>
+  </head>
+  <body>
 
-<body>
-
-  <!-- You can use the document as a place to set up your fixtures. -->
-  <simple-material-table title="Test Table Title"
+    <test-fixture id="BasicTestFixture">
+      <simple-material-table title="Test Table Title"
       show-action-add
       show-action-delete
 
     ></simple-material-table>
+    </test-fixture>
 
-  <script>
-    var myEl = document.querySelector('simple-material-table');
+    <script type="module">
+      var myEl = document.querySelector('simple-material-table');
+      suite('simple-material-table', () => {
 
-      suite('<simple-material-table>', function() {
         setup( function(){
           console.log('before test');
           myEl.columns = [
@@ -87,22 +82,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
           ];
 
-          Polymer.dom.flush();
+          flush();
 
         });
-
         test('Checks Column Header', function() {
           expect(myEl).to.be.ok;
           expect(myEl).to.have.property('columns').with.length(3);
           expect(myEl).to.have.property('tableData').with.length(4);
           expect(myEl).to.have.property('title').that.equals('Test Table Title');
 
-          var title = Polymer.dom(myEl.root).querySelector('div.title');
+          var title = myEl.root.querySelector('div.title');
           expect(title).to.be.ok;
           
           expect((title.innerText || title.textContent).trim()).to.equal('Test Table Title');
 
-          var thEle = Polymer.dom(myEl.root).querySelectorAll('th');
+          var thEle = myEl.root.querySelectorAll('th');
           expect(thEle).to.be.ok;
           console.log(thEle);
           expect(thEle).to.have.length(3);
@@ -125,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         test('Checks Table Rows', function() {
           expect(myEl).to.be.ok;
-          var theRows = Polymer.dom(myEl.root).querySelectorAll('tbody tr');
+          var theRows = myEl.root.querySelectorAll('tbody tr');
           expect(theRows).to.be.ok;
           expect(theRows).to.have.length(4);
 
@@ -215,7 +209,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('Row Selection 1', function(done) {
           expect(myEl).to.be.ok;
 
-          var theRows = Polymer.dom(myEl.root).querySelectorAll('tbody tr');
+          var theRows = myEl.root.querySelectorAll('tbody tr');
           expect(theRows).to.be.ok;
           expect(theRows).to.have.length(4);
 
@@ -240,7 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(myEl).to.be.ok;
 
 
-          var theRows = Polymer.dom(myEl.root).querySelectorAll('tbody tr');
+          var theRows = myEl.root.querySelectorAll('tbody tr');
           expect(theRows).to.be.ok;
           expect(theRows).to.have.length(4);
 
@@ -261,9 +255,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           row3.dispatchEvent(evt);
         });
 
+      
       });
-  </script>
+    </script>
 
-</body>
-
+  </body>
 </html>

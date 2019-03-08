@@ -1,3 +1,8 @@
 {
-    "jshint.enable": false
+    "jshint.enable": false,
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#0D3237",
+        "titleBar.activeBackground": "#12474D",
+        "titleBar.activeForeground": "#F5FCFD"
+    }
 }

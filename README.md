@@ -3,10 +3,13 @@
 
 A web component that provides a material design table.
 
+Now in Polymer 3.
 
 ## Install
 
-Install with bower install --save wintersandroid/material-table
+Install with yarn add wintersandroid/material-table
+or
+npm install --save wintersandroid/material-table
 
 ## Using
 
