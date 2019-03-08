@@ -1,8 +1,8 @@
 language: node_js
 sudo: required
 before_script:
-  - npm install -g bower polylint web-component-tester
-  - bower install
+  - npm install -g polymer-cli
+  - npm install
 env:
   global:
 #    - secure: NCk3KK+wbaXMzp8XAY6FeL+TSdI0AlPI3/tl0OpsUIaU2EiCjQuzf/UpyzCW5XZMEVFF4q/eDjrPkqJodHfpngj36mpkfmfqj9DrgDmYsV9BDvsTd8KmLsA6H8D6p7Qer+r1JMMB8PvX44vdhQ6GhZD1HFNYK1Ekpt0TkYwWKNw=
@@ -17,9 +17,9 @@ addons:
       - google-chrome-stable
   sauce_connect: false
 script:
-  - xvfb-run wct
+  - xvfb-run polymer test
 #  - "if [ \"${TRAVIS_PULL_REQUEST}\" = \"false\" ]; then wct -s 'default'; fi"
-dist: trusty
+dist: bionic
 branches:
   only:
     - master
