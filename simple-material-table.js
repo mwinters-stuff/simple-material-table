@@ -8,6 +8,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-item/paper-item-body.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-menu-button/paper-menu-button.js';
 import './table-icons.js';
 
 /**
@@ -182,85 +183,28 @@ class SimpleMaterialTable extends PolymerElement {
             <div class="title">{{title}}</div>
             <div class="spacer"></div>
             <div class="button-bar">
-              <paper-icon-button
-                class="small"
-                id="actionAdd"
-                icon="table:add"
-                on-tap="_tapActionAdd"
-                hidden$="[[!showActionAdd]]"
-              ></paper-icon-button>
-              <paper-icon-button
-                class="small"
-                id="actionEdit"
-                icon="table:create"
-                on-tap="_tapActionEdit"
-                disabled="[[!lastSelectedElement]]"
-                hidden$="[[!showActionEdit]]"
-              ></paper-icon-button>
-              <paper-icon-button
-                class="small"
-                id="actionDelete"
-                icon="table:remove"
-                on-tap="_tapActionDelete"
-                disabled="[[!lastSelectedElement]]"
-                hidden$="[[!showActionDelete]]"
-              ></paper-icon-button>
-              <paper-listbox
-                hidden$="[[!showColumnSelector]]"
-                horizontal-align="right"
-                vertical-align="top"
-                class="small"
-              >
-                <paper-icon-button
-                  class="dropdown-trigger small"
-                  id="columnSelectorButton"
-                  icon="table:filter"
-                ></paper-icon-button>
-                <template
-                  items="[[columns]]"
-                  is="dom-repeat"
-                  as="column"
-                  index-as="column_index"
-                >
-                  <paper-item
-                    role="menuitemcheckbox"
-                    active="{{!column.hidden}}"
-                    toggles
-                    column="[[column]]"
-                    on-tap="_selectColumn"
-                    column-index="[[column_index]]"
-                  >
-                    <paper-item-body>[[column.title]]</paper-item-body>
-                    <paper-checkbox
-                      checked="{{!column.hidden}}"
-                    ></paper-checkbox>
-                  </paper-item>
-                </template>
-              </paper-listbox>
+              <paper-icon-button class="small" id="actionAdd" icon="table:add" on-tap="_tapActionAdd" hidden$="[[!showActionAdd]]"></paper-icon-button>
+              <paper-icon-button class="small" id="actionEdit" icon="table:create" on-tap="_tapActionEdit" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionEdit]]"></paper-icon-button>
+              <paper-icon-button class="small" id="actionDelete" icon="table:remove" on-tap="_tapActionDelete" disabled="[[!lastSelectedElement]]" hidden$="[[!showActionDelete]]"></paper-icon-button>
+              <paper-menu-button no-overlap="true" dynamic-align="true">
+                <paper-icon-button slot="dropdown-trigger" class="dropdown-trigger small" id="columnSelectorButton" icon="table:filter"></paper-icon-button>
+                <paper-listbox slot="dropdown-content" hidden$="[[!showColumnSelector]]" horizontal-align="right" vertical-align="top" class="small">
+                  <template items="[[columns]]" is="dom-repeat" as="column" index-as="column_index">
+                    <paper-item role="menuitemcheckbox" active="{{!column.hidden}}" toggles column="[[column]]" on-tap="_selectColumn" column-index="[[column_index]]">
+                      <paper-item-body>[[column.title]]</paper-item-body>
+                      <paper-checkbox checked="{{!column.hidden}}"></paper-checkbox>
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-menu-button>
             </div>
           </div>
           <table id="theTable" class="mdl-data-table mdl-js-data-table">
             <thead>
               <tr>
-                <template
-                  id="headerTemplate"
-                  is="dom-repeat"
-                  items="[[columns]]"
-                  as="column"
-                  index-as="column_index"
-                  observe="hidden column.hidden"
-                >
-                  <th
-                    index="[[column_index]]"
-                    class$="[[_columnHeaderClass(column_index)]]"
-                    on-tap="_onTapHeader"
-                    hidden$="[[column.hidden]]"
-                  >
-                    <iron-icon
-                      class="small"
-                      hidden
-                      icon="[[sortColumnIcon]]"
-                    ></iron-icon>
+                <template id="headerTemplate" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden">
+                  <th index="[[column_index]]" class$="[[_columnHeaderClass(column_index)]]" on-tap="_onTapHeader" hidden$="[[column.hidden]]">
+                    <iron-icon class="small" hidden icon="[[sortColumnIcon]]"></iron-icon>
                     <span>{{column.title}}</span>
                   </th>
                 </template>
@@ -268,29 +212,10 @@ class SimpleMaterialTable extends PolymerElement {
             </thead>
 
             <tbody id="tableBody">
-              <template
-                id="simpleDataTemplate"
-                is="dom-repeat"
-                items="[[tableData]]"
-                as="itemrow"
-                index-as="row_index"
-                sort="_sortTable"
-                observe="tableData.*"
-              >
+              <template id="simpleDataTemplate" is="dom-repeat" items="[[tableData]]" as="itemrow" index-as="row_index" sort="_sortTable" observe="tableData.*">
                 <tr on-tap="_rowTap" index="[[row_index]]" row="[[itemrow]]">
-                  <template
-                    id="dataTemplateColumns"
-                    is="dom-repeat"
-                    items="[[columns]]"
-                    as="column"
-                    index-as="column_index"
-                    observe="hidden column.hidden itemrow columns.* tableData.*"
-                  >
-                    <td
-                      column-index="[[column_index]]"
-                      class$="[[_columnClass(column_index)]]"
-                      hidden$="[[column.hidden]]"
-                    >
+                  <template id="dataTemplateColumns" is="dom-repeat" items="[[columns]]" as="column" index-as="column_index" observe="hidden column.hidden itemrow columns.* tableData.*">
+                    <td column-index="[[column_index]]" class$="[[_columnClass(column_index)]]" hidden$="[[column.hidden]]">
                       {{_cellData(itemrow, column)}}
                     </td>
                   </template>
@@ -304,7 +229,7 @@ class SimpleMaterialTable extends PolymerElement {
   }
 
   static get is() {
-    return "simple-material-table";
+    return 'simple-material-table';
   }
 
   /**
@@ -361,7 +286,7 @@ class SimpleMaterialTable extends PolymerElement {
        * Title for display at the top of the card.
        */
       title: {
-        type: String
+        type: String,
       },
 
       /**
@@ -370,7 +295,7 @@ class SimpleMaterialTable extends PolymerElement {
       tableData: {
         type: Array,
         // notify: true,
-        value: []
+        value: [],
         // observe: '_tableDataChanged'
       },
 
@@ -379,7 +304,7 @@ class SimpleMaterialTable extends PolymerElement {
        */
       showActionAdd: {
         type: Boolean,
-        value: false
+        value: false,
       },
 
       /**
@@ -387,7 +312,7 @@ class SimpleMaterialTable extends PolymerElement {
        */
       showActionEdit: {
         type: Boolean,
-        value: false
+        value: false,
       },
 
       /**
@@ -395,7 +320,7 @@ class SimpleMaterialTable extends PolymerElement {
        */
       showActionDelete: {
         type: Boolean,
-        value: false
+        value: false,
       },
 
       /**
@@ -403,7 +328,7 @@ class SimpleMaterialTable extends PolymerElement {
        **/
       showColumnSelector: {
         type: Boolean,
-        value: false
+        value: false,
       },
 
       /**
@@ -423,7 +348,7 @@ class SimpleMaterialTable extends PolymerElement {
         // notify: true,
         value: function() {
           return [];
-        }
+        },
       },
 
       /**
@@ -432,7 +357,7 @@ class SimpleMaterialTable extends PolymerElement {
       sortColumnIndex: {
         type: Number,
         notify: true,
-        value: 0
+        value: 0,
       },
 
       /**
@@ -441,16 +366,13 @@ class SimpleMaterialTable extends PolymerElement {
       sortColumnAsc: {
         type: Boolean,
         // notify: true,
-        value: false
-      }
+        value: false,
+      },
     };
   }
 
   static get observers() {
-    return [
-      "_sortColumnAscChanged(sortColumnAsc)",
-      "_tableDataChanged(tableData.*)"
-    ];
+    return ['_sortColumnAscChanged(sortColumnAsc)', '_tableDataChanged(tableData.*)'];
   }
 
   constructor() {
@@ -462,13 +384,9 @@ class SimpleMaterialTable extends PolymerElement {
   }
 
   _tableDataChanged() {
-    if (
-      this.isReady &&
-      this.$.simpleDataTemplate &&
-      this.$.simpleDataTemplate.render
-    ) {
+    if (this.isReady && this.$.simpleDataTemplate && this.$.simpleDataTemplate.render) {
       if (this.lastSelectedElement) {
-        this.lastSelectedElement.classList.remove("is-selected");
+        this.lastSelectedElement.classList.remove('is-selected');
       }
       this.selectedTableRow = -1;
       this.lastSelectedElement = null;
@@ -483,34 +401,28 @@ class SimpleMaterialTable extends PolymerElement {
 
   _cellData(itemrow, column) {
     //console.log("celldata",itemrow,column);
-    return column.formatter
-      ? column.formatter(itemrow[column.column])
-      : itemrow[column.column];
+    return column.formatter ? column.formatter(itemrow[column.column]) : itemrow[column.column];
   }
 
   _columnClass(index) {
     if (this.columns && index < this.columns.length) {
-      return this.columns[index].number
-        ? ""
-        : "mdl-data-table__cell--non-numeric";
+      return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric';
     }
-    return "mdl-data-table__cell--non-numeric";
+    return 'mdl-data-table__cell--non-numeric';
   }
 
   _columnHeaderClass(index) {
     if (this.columns && index < this.columns.length) {
-      return this.columns[index].number
-        ? ""
-        : "mdl-data-table__cell--non-numeric ";
+      return this.columns[index].number ? '' : 'mdl-data-table__cell--non-numeric ';
     }
-    return "mdl-data-table__cell--non-numeric";
+    return 'mdl-data-table__cell--non-numeric';
   }
 
   _rowTap(e) {
     //console.log('_rowTap', e);
     var element = null;
     for (var i = 0; i < e.path.length; i++) {
-      if (e.path[i].tagName === "TR") {
+      if (e.path[i].tagName === 'TR') {
         element = e.path[i];
         break;
       }
@@ -524,7 +436,7 @@ class SimpleMaterialTable extends PolymerElement {
     if (element) {
       if (lastSelected > -1) {
         if (this.lastSelectedElement) {
-          this.lastSelectedElement.classList.remove("is-selected");
+          this.lastSelectedElement.classList.remove('is-selected');
         }
         this.selectedTableRow = -1;
         this.lastSelectedElement = null;
@@ -532,13 +444,13 @@ class SimpleMaterialTable extends PolymerElement {
 
       if (toSelect !== lastSelected) {
         this.selectedTableRow = toSelect;
-        element.classList.add("is-selected");
+        element.classList.add('is-selected');
 
         if (lastSelected > -1) {
-          this.fire("row-unselected", lastSelected);
+          this.fire('row-unselected', lastSelected);
         }
 
-        this.fire("row-selected", element.row);
+        this.fire('row-selected', element.row);
         this.lastSelectedElement = element;
       }
     }
@@ -549,14 +461,14 @@ class SimpleMaterialTable extends PolymerElement {
 
     var element = null;
     for (var i = 0; i < e.path.length; i++) {
-      if (e.path[i].tagName === "TH") {
+      if (e.path[i].tagName === 'TH') {
         element = e.path[i];
         break;
       }
     }
 
     if (this.currentSortHeaderElement) {
-      this.currentSortHeaderElement.classList.remove("mdl-data-table__sort");
+      this.currentSortHeaderElement.classList.remove('mdl-data-table__sort');
       this.currentSortHeaderElement.children[0].hidden = true;
     }
 
@@ -566,7 +478,7 @@ class SimpleMaterialTable extends PolymerElement {
     this.sortColumnIndex = e.model.column_index;
 
     this.currentSortHeaderElement = element;
-    this.currentSortHeaderElement.classList.add("mdl-data-table__sort");
+    this.currentSortHeaderElement.classList.add('mdl-data-table__sort');
     var iconElement = element.children[0];
     iconElement.hidden = false;
 
@@ -578,12 +490,8 @@ class SimpleMaterialTable extends PolymerElement {
     var r = 0;
     var column = this.columns[this.sortColumnIndex].column;
 
-    var av = this.columns[this.sortColumnIndex].number
-      ? parseFloat(a[column])
-      : a[column];
-    var bv = this.columns[this.sortColumnIndex].number
-      ? parseFloat(b[column])
-      : b[column];
+    var av = this.columns[this.sortColumnIndex].number ? parseFloat(a[column]) : a[column];
+    var bv = this.columns[this.sortColumnIndex].number ? parseFloat(b[column]) : b[column];
 
     if (av < bv) {
       r = -1;
@@ -603,20 +511,20 @@ class SimpleMaterialTable extends PolymerElement {
   }
 
   _tapActionAdd() {
-    this.fire("action-add");
+    this.fire('action-add');
   }
 
   _tapActionEdit() {
-    this.fire("action-edit", this.selectedTableRow.row);
+    this.fire('action-edit', this.selectedTableRow.row);
   }
 
   _tapActionDelete() {
-    this.fire("action-delete", this.selectedTableRow.row);
+    this.fire('action-delete', this.selectedTableRow.row);
   }
 
   // Element Lifecycle
   _sortColumnAscChanged(value) {
-    this.sortColumnIcon = value ? "table:arrow-up" : "table:arrow-down";
+    this.sortColumnIcon = value ? 'table:arrow-up' : 'table:arrow-down';
   }
 
   _toggleColumnMenu() {
@@ -625,14 +533,11 @@ class SimpleMaterialTable extends PolymerElement {
 
   _selectColumn(e) {
     // console.log('_selectColumn',e.model.column_index);
-    this.set(
-      "columns." + e.model.column_index + ".hidden",
-      !this.columns[e.model.column_index].hidden
-    );
+    this.set('columns.' + e.model.column_index + '.hidden', !this.columns[e.model.column_index].hidden);
   }
 
   selectRow(column, value) {
-    var elements = Polymer.dom(this.$.tableBody).querySelectorAll("tr");
+    var elements = Polymer.dom(this.$.tableBody).querySelectorAll('tr');
     for (var i = 0; i < elements.length; i++) {
       if (elements[i].row[column] === value) {
         //console.log('selectRow', i, elements[i]);
@@ -646,11 +551,11 @@ class SimpleMaterialTable extends PolymerElement {
   fire(ev, data) {
     this.dispatchEvent(
       new CustomEvent(ev, {
-        detail: data
+        detail: data,
       }),
       {
-        bubbles: true
-      }
+        bubbles: true,
+      },
     );
   }
 }
