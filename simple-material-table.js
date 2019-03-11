@@ -515,11 +515,11 @@ class SimpleMaterialTable extends PolymerElement {
   }
 
   _tapActionEdit() {
-    this.fire('action-edit', this.selectedTableRow.row);
+    this.fire('action-edit', this.tableData[this.selectedTableRow]);
   }
 
   _tapActionDelete() {
-    this.fire('action-delete', this.selectedTableRow.row);
+    this.fire('action-delete', this.tableData[this.selectedTableRow]);
   }
 
   // Element Lifecycle
